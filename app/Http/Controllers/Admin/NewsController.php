@@ -10,18 +10,18 @@ class NewsController extends Controller
 {
     public function index(Request $request){
             $items = News::select(['id','title','sub_description','image']);
-        if ($request->ajax()){
-
-            if ($request->has("search") &&$request->input('search') !=null ){
-                $items = News::where('title','like',$request->input('search'))->Orwhere('sub_description')->
-                select(['id','title','sub_description','image']);
+            if($request->has("search") &&$request->input('search') !=null ){
+                $items = $items->where('title','like',$request->input('search'))->Orwhere('sub_description');
             }
-            $items= $items->paginate(20);
+          $items=$items->paginate(20);
+        
+        if ($request->ajax()){
             return view('admin.news.paginate',compact('items'))->render();
         }
-        $items=$items->paginate(20);
         return view('admin.news.index',compact('items'));
     }
+    
+    
     public function show($id){
         try
         {
