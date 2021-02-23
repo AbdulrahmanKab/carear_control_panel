@@ -42,7 +42,7 @@ class CoursesController extends Controller
             return response()->json(['status'=>false]);
         }
     }
-    public function show($id){
+    public function edit($id){
         try
         {
             $item = Courses::findOrFail($id);

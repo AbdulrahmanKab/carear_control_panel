@@ -95,10 +95,10 @@ License: You must have a valid license purchased only from themeforest(the above
                         <div class="kt-login__head">
                             <h3 class="kt-login__title">Sign In To Admin</h3>
                         </div>
-                        <form class="kt-form" method="POST" action="{{ route('login') }}">
+                        <form class="kt-form" method="POST" action="{{URL::to('/')}}/login">
                             @csrf
                             <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Email" name="name" autocomplete="off">
+                                <input class="form-control" type="text" placeholder="username" name="name" autocomplete="off">
                             </div>
                             <div class="input-group">
                                 <input  id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">

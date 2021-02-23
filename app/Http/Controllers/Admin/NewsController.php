@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\News;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -22,7 +23,7 @@ class NewsController extends Controller
         $items=$items->paginate(20);
         return view('admin.news.index',compact('items'));
     }
-    public function show($id){
+    public function edit($id){
         try
         {
             $item = News::findOrFail($id);
@@ -55,12 +56,16 @@ class NewsController extends Controller
         }
    }
    public function delete($id){
-       $item = News::findOrFail($id);
-       $delete =  $item->delete();
-       if ($delete){
-           return response()->json(['status'=>true]);
-       }else{
-           return response()->json(['status'=>false]);
+       try{
+           $item = News::findOrFail($id);
+           $delete = $item->delete();
+           if ($delete) {
+               return response()->json(['status' => true]);
+           } else {
+               return response()->json(['status' => false]);
+           }
+       }catch (ModelNotFoundException $exception){
+           return response()->json(['status' => false,'message'=>'العنصر غير موجود']);
        }
    }
    public function update(Request $request,$id){

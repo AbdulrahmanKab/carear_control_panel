@@ -35,7 +35,7 @@ class ServicesController extends Controller
         }
 
     }
-    public function show($id){
+    public function edit($id){
         try
         {
             $item = Services::findOrFail($id);

@@ -35,14 +35,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+//        $this->middleware('guest')->except('logout');
     }
 
-    public function attemptLogin(\Illuminate\Http\Request $request){
-        if (Auth::attempt(['email'=>$request->input('name'),'password'=>$request->input('password')],$request->filled('remember'))){
-            return true;
-        }
-
-
-    }
 }
