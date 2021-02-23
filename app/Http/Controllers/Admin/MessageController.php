@@ -22,10 +22,14 @@ class MessageController extends Controller
             $content = Messages::findOrFail($id);
 
             $delete = $content->delete();
-            return response()->json(['status' => true]);
+             if ($delete){
+            return response()->json(['status' => true,'message'=>'تم العملية بنجاح']);
+             }else{
+            return response()->json(['status' => true,'message'=>'لم تتم العملية']);
+             }
 
         }catch (ModelNotFoundException $exception){
-            return response()->json(['status' => false]);
+            return response()->json(['status' => false,'message'=>'العنصر غير موجود']);
         }
     }
 }

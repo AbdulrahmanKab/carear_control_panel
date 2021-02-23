@@ -11,16 +11,15 @@ class NewsController extends Controller
 {
     public function index(Request $request){
             $items = News::select(['id','title','sub_description','image']);
-        if ($request->ajax()){
 
             if ($request->has("search") &&$request->input('search') !=null ){
-                $items = News::where('title','like',$request->input('search'))->Orwhere('sub_description')->
-                select(['id','title','sub_description','image']);
+                $items = News::where('title',"=",$request->input('search'))->Orwhere('sub_description');
             }
             $items= $items->paginate(20);
+           if ($request->ajax()){
             return view('admin.news.paginate',compact('items'))->render();
-        }
-        $items=$items->paginate(20);
+           }
+
         return view('admin.news.index',compact('items'));
     }
     public function edit($id){
@@ -29,7 +28,7 @@ class NewsController extends Controller
             $item = News::findOrFail($id);
             return  response()->json(['status'=>true,'data'=>$item]);
         }catch (ModelNotFoundException $exception){
-            return "not found";
+            return  response()->json(['status'=>true ,'message'=>'العنصر غير موجود']);
         }
     }
     public function create(Request $request){
@@ -50,9 +49,9 @@ class NewsController extends Controller
        $news->lang = $request->input('lang');
         $save=$news->save();
         if ($save){
-            return response()->json(['status'=>true]);
+            return response()->json(['status'=>true,'message'=>'تمت العملية بنجاح']);
         }else{
-            return response()->json(['status'=>false]);
+            return response()->json(['status'=>false,'message'=>'لم تتم العملية']);
         }
    }
    public function delete($id){
@@ -60,9 +59,9 @@ class NewsController extends Controller
            $item = News::findOrFail($id);
            $delete = $item->delete();
            if ($delete) {
-               return response()->json(['status' => true]);
+               return response()->json(['status' => true,'message'=>'تمت العملية بنجاح']);
            } else {
-               return response()->json(['status' => false]);
+               return response()->json(['status' => false,'message'=>'لم تتم العملية']);
            }
        }catch (ModelNotFoundException $exception){
            return response()->json(['status' => false,'message'=>'العنصر غير موجود']);
@@ -74,7 +73,7 @@ class NewsController extends Controller
             'description'=>'required'
         ];
        if ($request->hasFile('image')){
-        $validation +=['image'=>'required|mimes:jpeg,png,jpg',];
+        $validation +=['image'=>'mimes:jpeg,png,jpg',];
        }
        $request->validate($validation);
        try {
@@ -89,18 +88,17 @@ class NewsController extends Controller
                $imageName  = time().".".$image->getClientOriginalExtension();
                $image->move(public_path('/uploads/'),$imageName);
                $item->image = $imageName;
-
            }
            $item->description = $request->input('description');
            $item->lang = $request->input('lang');
            $update=   $item->update();
            if ($update){
-               return response()->json(['status'=>true]);
+               return response()->json(['status'=>true,'message'=>"تمت العملية بنجاح"]);
            }else{
-               return response()->json(['status'=>false]);
+               return response()->json(['status'=>false,'message'=>'لم تتم العملية']);
            }
        }catch (ModelNotFoundException $exception){
-           return response()->json(['status'=>false]);
+           return response()->json(['status'=>false,'message'=>'العنصر غير موجود']);
        }
    }
 }

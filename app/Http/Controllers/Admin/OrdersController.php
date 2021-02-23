@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Orders;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -22,12 +23,16 @@ class OrdersController extends Controller
     }
 
     public function delete($id){
-        $item = Orders::findOrFail($id);
-        $delete =  $item->delete();
-        if ($delete){
-            return response()->json(['status'=>true]);
-        }else{
-            return response()->json(['status'=>false]);
+        try{
+            $item = Orders::findOrFail($id);
+            $delete = $item->delete();
+            if ($delete) {
+                return response()->json(['status' => true, 'message' => "تمت العملية بنجاح"]);
+            } else {
+                return response()->json(['status' => false, 'message' => 'لم تتم العملية']);
+            }
+        }catch (ModelNotFoundException $exception){
+            return response()->json(['status' => false, 'message' => 'تمت العملية']);
         }
     }
 }

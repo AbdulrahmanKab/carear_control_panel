@@ -12,15 +12,13 @@ class SliderContentController extends Controller
 {
     public function index(Request $request){
             $sliders = Sliders::select(['id','title','link','image','status']);
+        if ($request->has("search") &&$request->input('search') !=null ){
+            $sliders= $sliders->where('title','like',"%".$request->input('search')."%");
+        }
+        $sliders = $sliders->paginate(20);
         if ($request->ajax()){
-            if ($request->has("search") &&$request->input('search') !=null ){
-
-                $sliders= $sliders->where('title','like',"%".$request->input('search')."%");
-            }
-            $sliders = $sliders->paginate(20);
             return view('admin.slider.paginate',compact('sliders'))->render();
         }
-        $sliders = Sliders::select(['id','title','link','image'])->paginate();
         return view('admin.slider.index',compact('sliders'));
     }
     public function create(Request $request){
@@ -91,12 +89,12 @@ try
             }
             $update=   $item->update();
             if ($update){
-                return response()->json(['status'=>true]);
+                return response()->json(['status'=>true,'message'=>'تمت العملية بنجاح']);
             }else{
-                return response()->json(['status'=>false]);
+                return response()->json(['status'=>false,'message'=>"لم تتم العملية"]);
             }
         }catch (ModelNotFoundException $exception){
-            return response()->json(['status'=>false]);
+            return response()->json(['status'=>false,'message'=>"العنصر غير موجود"]);
         }
 
 

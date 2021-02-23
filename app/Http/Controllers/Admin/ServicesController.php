@@ -14,7 +14,6 @@ class ServicesController extends Controller
         if ($request->ajax()){
             return view('admin.services.paginate',compact('items'))->render();
         }
-
         return view('admin.services.index',compact('items'));
     }
     public function create(Request $request){
@@ -29,9 +28,9 @@ class ServicesController extends Controller
       $services->icons = $request->input('icons');
         $save = $services->save();
         if ($save){
-            return response()->json(['status'=>true]);
+            return response()->json(['status'=>true,'message'=>'تمت العملية بنجاح']);
         }else{
-            return response()->json(['status'=>false]);
+            return response()->json(['status'=>false,'message'=>'لم تتم العملية بنجاح']);
         }
 
     }
@@ -41,7 +40,7 @@ class ServicesController extends Controller
             $item = Services::findOrFail($id);
             return  response()->json(['status'=>true,'data'=>$item]);
         }catch (ModelNotFoundException $exception){
-            return "not found";
+            return  response()->json(['status'=>true,'message'=>"العنصر غير موجود"]);
         }
     }
     public function delete($id){
@@ -49,12 +48,12 @@ class ServicesController extends Controller
             $item = Services::findOrFail($id);
             $delete = $item->delete();
             if ($delete) {
-                return response()->json(['status' => true]);
+                return response()->json(['status' => true,'message'=>'تمت العملية بنجاح']);
             } else {
-                return response()->json(['status' => false]);
+                return response()->json(['status' => false,'message'=>'لم تتم العملية']);
             }
         }catch (ModelNotFoundException $exception){
-            return response()->json(['status' => false]);
+            return response()->json(['status' => false,'message'=>'العنصر غير موجود']);
         }
     }
     public function update(Request $request,$id){
@@ -63,15 +62,19 @@ class ServicesController extends Controller
             'description'=>'required',
             "icons"=>'required'
         ]);
-        $service =  Services::findOrFail($id);
-        $service->title = $request->input('title');
-        $service->description = $request->input('description');
-        $service->icons = $request->input('icons');
-        $update = $service->update();
-        if ($update){
-            return response()->json(['status'=>true]);
-        }else{
-            return response()->json(['status'=>false]);
+        try{
+            $service = Services::findOrFail($id);
+            $service->title = $request->input('title');
+            $service->description = $request->input('description');
+            $service->icons = $request->input('icons');
+            $update = $service->update();
+            if ($update) {
+                return response()->json(['status' => true, 'message' => "تمت العملية بنجاح"]);
+            } else {
+                return response()->json(['status' => false, 'message' => 'لم تتم العملية']);
+            }
+        }catch (ModelNotFoundException $exception){
+            return response()->json(['status' => false, 'message' => 'العنصر غير موجود']);
         }
     }
 }

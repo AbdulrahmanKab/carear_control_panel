@@ -33,7 +33,7 @@ class SystemController extends Controller
         $system_isnert->order =$number;
         $system_isnert->status =1;
         $system_isnert->save();
-        return response()->json(['status'=>true]);
+        return response()->json(['status'=>true,'message'=>'تمت العملية بنجاح']);
     }
     public function getType(){
         $courses = SystemConstants::where('type','like',"courses_type")
