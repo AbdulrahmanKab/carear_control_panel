@@ -1,4 +1,4 @@
-@extends('layout.master_layout')
+@extends('admin.layout.master_layout')
 @section('content')
     <div class="container-fluid">
         <div class="row d-flex flex-row mt-5 ml-3" style="font-size:1.2em">

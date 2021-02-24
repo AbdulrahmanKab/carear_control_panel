@@ -81,4 +81,11 @@ Route::group(['prefix'=>'admin','middleware'=>'auth:web'],function (){
     Route::post('/profile/update',"admin\profileController@update");
     /*****************************************/
     Route::post("/courses/type","Admin\SystemController@getType")->middleware("permission:system_constant");
+
+    /***************Partner***************/
+    Route::get('/partners','Admin\PartnerController@index');
+    Route::post("/save/partner",'Admin\PartnerController@create');
+    Route::get("/partner/edit",'Admin\PartnerController@edit');
+    Route::post("/partner/update",'Admin\PartnerController@update');
+    Route::post("/partner/delete",'Admin\PartnerController@delete');
 });

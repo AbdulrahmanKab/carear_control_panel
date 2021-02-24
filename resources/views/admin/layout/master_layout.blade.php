@@ -3,7 +3,7 @@
 <!-- begin::Head -->
 <head>
     <meta charset="utf-8"/>
-    <title>Metronic | Dashboard</title>
+    <title>High five Dashboard</title>
     <meta name="description" content="Latest updates and statistic charts">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{csrf_token()}}">
@@ -44,14 +44,16 @@
     <link href="/assets/vendors/custom/vendors/flaticon2/flaticon.css" rel="stylesheet" type="text/css" />
     <link href="/assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
     <!--end:: Global Optional Vendors -->
-    <!--begin::Global Theme Styles(used by all pages) -->
-
     <link href="/assets/css/demo8/style.bundle.rtl.css" rel="stylesheet" type="text/css" />
     @yield('css')
     <!--end::Global Theme Styles -->
     <!--begin::Layout Skins(used by all pages) -->
     <!--end::Layout Skins -->
-
+    <style>
+        .fancybox-caption__body{
+            overflow:hidden;
+        }
+    </style>
     <link rel="shortcut icon" href="/assets/media/logos/favicon.ico" />
 </head>
 <!-- end::Head -->
@@ -318,7 +320,13 @@
                                        </a>
 
                                    </li>
-
+                                    <li class="kt-menu__item  kt-menu__item--open kt-menu__item--here kt-menu__item--submenu kt-menu__item--rel" data-ktmenu-submenu-toggle="hover" aria-haspopup="true">
+                                        <a href="/admin/partners" class="kt-menu__link ">
+                                            <span class="kt-menu__link-text">الشركاء</span>
+                                            <i class="kt-menu__hor-arrow la la-angle-down"></i>
+                                            <i class="kt-menu__ver-arrow la la-angle-right"></i>
+                                        </a>
+                                    </li>
                                    <li class="kt-menu__item  kt-menu__item--open kt-menu__item--here kt-menu__item--submenu kt-menu__item--rel" data-ktmenu-submenu-toggle="hover" aria-haspopup="true">
                                        <a href="/" class="kt-menu__link kt-menu__toggle">
                                            <span class="kt-menu__link-text">ثوابت النظام</span>

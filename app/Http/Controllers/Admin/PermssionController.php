@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Permissions;
+use App\Models\PermissionsName;
 use App\User;
 use Illuminate\Http\Request;
 
 class PermssionController extends Controller
 {
     public function index(){
+        $permission = PermissionsName::get()->groupBy("group_id");
+
         $users = User::select('name','id','email')->get();
-        return view('admin.permissions.index',compact('users'));
+        return view('admin.permissions.index',compact('users','permission'));
     }
     public function getPermission($id){
         $user =User::findOrFail($id)->getAllPermissions()->toArray();

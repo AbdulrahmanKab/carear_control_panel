@@ -19,24 +19,22 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 table-data">
-                @include('admin.news.paginate')
+                @include('admin.partner.paginate')
             </div>
         </div>
     </div>
 
-    @include('admin.news.sub')
+    @include('admin.partner.sub')
 @endsection
 @section('js')
     <script>
-        CKEDITOR.replace( 'editor2' );
-    </script>
-
-    <script>
         $("#image_preview").fadeOut()
         function fetchData(page){
+            let search = $('#search').val()
             $.ajax({
-                url:"/admin/news?page="+page,
+                url:"/admin/partners?page="+page,
                 method:"get",
+                data: {search:search},
                 dataType:'html',
                 success:function (data){
                     $('.table-data').html('')
@@ -50,8 +48,7 @@
             fetchData(page)
         })
         $(document).on('click','.add_new',function (){
-            $("#title").val("")
-            $("#link").val("")
+            $("#name").val("")
             $("#id").val("")
             $("#image_preview").fadeOut()
             $('#control_user').modal('show')
@@ -65,20 +62,17 @@
     <script>
         $(document).on('click','#save',function (){
             let form = document.getElementById("person_form");
-            let formDate = new FormData(form)
-            var data = CKEDITOR.instances.editor2.getData()
-            formDate.append('description',data);
+            let formData = new FormData(form)
             let id = $("#id").val();
             if ($("#id").val() ==""){
                 $.ajax({
-                    url:'/admin/save/news',
+                    url:'/admin/save/partner',
                     method:'post',
-                    data:formDate,
+                    data:formData,
                     dataType:'json',
                     success:function (response){
                         if (response.status){
                             Swal.fire("تم الحفظ بنجاح", "success");
-
                         }
                         else {
                             Swal.fire("حدث خطأ","error")
@@ -87,24 +81,19 @@
                         $('#control_user').modal('hide')
                     },
                     error: function(response) {
-                        $('#first_name_error').text(response.responseJSON.errors.first_name[0]);
-                        $('#second_name_error').text(response.responseJSON.errors.second_name[0]);
-                        $('#mother_name_error').text(response.responseJSON.errors.mother_name[0]);
-                        $('#family_name_error').text(response.responseJSON.errors.family_name[0]);
-                        $('#third_name_error').text(response.responseJSON.errors.third_name[0]);
+
                     },
                     contentType: false,
                     cache: false,
                     processData: false,
-
                 })
             }
             else
             {
                 $.ajax({
-                    url: '/admin/news/' + id + "/update",
+                    url: '/admin/partner/update',
                     method: 'post',
-                    data: formDate,
+                    data: formData,
                     dataType: 'json',
                     success: function (response) {
                         if (response.status){
@@ -134,11 +123,12 @@
 
     <script>
         $(document).on('click','.update-person',function (){
-            let id = $(this).attr('data-route')
+            var id = $(this).attr('data-route')
+
             $.ajax({
-                url:"/admin/news/"+id,
-                method:'post',
-                data:{},
+                url:"/admin/partner/edit",
+                method:'GET',
+                data: {id:id},
                 dataType:'json',
                 success:function (response){
                     $("#title").val("")
@@ -146,18 +136,15 @@
                     $("#image").val("")
                     ///////////////////////////
                     $("#id").val(id)
-                    $("#title").val(response.data.title)
-                    $("#sub_description").val(response.data.sub_description)
-                    CKEDITOR.instances.editor2.setData(response.data.description)
+                    $("#name").val(response.data.name)
                     // $("#image").val(response.data.image)
-                    $("#lang option[value='"+response.data.lang+"'"+ "]").prop('selected',true)
                     $("#image_preview").attr('src',"/uploads/"+response.data.image)
                     $("#image_preview").fadeIn()
                     $("#control_user").modal('show')
                 },
                 contentType: false,
                 cache: false,
-                processData: false,
+
             })
         })
     </script>
@@ -175,9 +162,9 @@
                 if (result.value) {
                     let id = item.attr('data-route')
                     $.ajax({
-                        url:"/admin/news/"+id+"/delete",
+                        url:"/admin/partner/delete",
                         method:'post',
-                        data:{},
+                        data:{id:id},
                         success:function (response){
                             if (response.status){
                                 Swal.fire(
@@ -189,15 +176,15 @@
                                 Swal.fire("العنصر غير موجود","error")
                             }
                             item.closest('tr').remove()
-                        }
+                        },
+                        error:function (){
+                        Swal.fire("العنصر غير موجود","error")
+                        },
+                        cache:false,
+                        dataProcess:false,
 
                     })
 
-                    Swal.fire(
-                        "تم الحذف!",
-                        "تم حذف العنصر بنجاح",
-                        "success"
-                    )
                     // result.dismiss can be "cancel", "overlay",
                     // "close", and "timer"
                 } else if (result.dismiss === "cancel") {
@@ -214,19 +201,7 @@
     <script>
         $('#search').on('input',function(e){
             let search = $('#search').val()
-            $.ajax({
-                url:"/admin/news?search="+search,
-                method:'GET',
-                data:{},
-                dataType:'HTML',
-                success:function (data){
-                    $('.table-data').html('')
-                    $('.table-data').append(data)
-                },
-                contentType: false,
-                cache: false,
-                processData: false,
-            })
+            fetchData(1);
         });
 
     </script>
@@ -241,3 +216,5 @@
         }
     </style>
 @endsection
+
+

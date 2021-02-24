@@ -1,4 +1,4 @@
-@extends('layout.master_layout')
+@extends('admin.layout.master_layout')
 @section('content')
 <div class="container-fluid" style="margin-top:7em">
     <form class="row mt-5 ml-5" id="personal_info">

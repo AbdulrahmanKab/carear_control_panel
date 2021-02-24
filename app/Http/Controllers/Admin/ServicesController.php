@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Partners;
 use App\Models\Services;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class ServicesController extends Controller
     public function edit($id){
         try
         {
-            $item = Services::findOrFail($id);
+            $item = Partners::findOrFail($id);
             return  response()->json(['status'=>true,'data'=>$item]);
         }catch (ModelNotFoundException $exception){
             return  response()->json(['status'=>true,'message'=>"العنصر غير موجود"]);
