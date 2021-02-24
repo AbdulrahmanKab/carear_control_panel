@@ -16,16 +16,21 @@
                         <input type="hidden" name="id" class="user_id" data-route="" id="id">
 
                         @foreach($permission as $item)
+                            <?php $num = $item->count(); ?>
+                           <?php $group_name =$item->skip($num-1) ?>
+                               <div class="col-sm-12 row ml-1">
+                                    {{$group_name["group_name"]}}
+                                   <input class="ml-1 mt-2 outer" type="checkbox"  id="{{$group_name["group_name"]}}" >
 
-                            @foreach($item as $i)
-                                <label for="" class="col-sm-4">
+                               </div>
+                            @foreach($item->take($num-1) as $i)
+                                <label for="" class="col-sm-4 mt-3">
                                     {{$i->preview_name}}
-                                    <input  class="slider" id="per{{$i->id}}" type="checkbox" value="{{$i->id}}" name="permisssions[]">
+                                    <input   class="{{$group_name["group_name"]}}" id="per{{$i->id}}" type="checkbox" value="{{$i->id}}" name="permisssions[]">
                                 </label>
                             @endforeach
                                 <hr class="col-ms-12" style="width:90%">
                         @endforeach
-
                     </form>
                 </div>
 
@@ -39,3 +44,4 @@
     </div>
 
 </div>
+

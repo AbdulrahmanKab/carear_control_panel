@@ -34,15 +34,17 @@
                 method:'get',
                 data:{},
                 success:function (response){
-                    for(let y = 11; y<18;y++){
+                    console.log(response.data.length)
+                    for(let y = 0; y<response.data.length;y++){
                         $('#per'+y).prop('checked', false );
                     }
-
                     for(let i=0;i<response.data.length;i++){
                         $('#per'+response.data[i].id).prop('checked', true );
                         let name = $("#per"+response.data[i].id).attr("class")
 
                         $('#'+name).prop('checked', true );
+                        let id_item =$('#'+name).attr("class")
+                        $('#'+id_item).prop('checked', true );
                     }
                     $('#id').attr('data-route',response.data[0].pivot.model_id);
                 }
@@ -200,6 +202,16 @@
         })
         $(document).on('click','#messages',function (){
             $('.messages').prop('checked',!($(".messages").prop('checked')))
+        })
+    </script>
+    <script>
+        $(document).on('click',".outer",function (){
+            let class_name   = $(this).attr('id')
+            if ($("#"+class_name).prop('checked')){
+                $('.'+class_name).prop('checked',true)
+            }else {
+                $('.'+class_name).prop('checked',false)
+            }
         })
     </script>
 @endsection

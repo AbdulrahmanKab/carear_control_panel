@@ -12,6 +12,9 @@ class PermssionController extends Controller
 {
     public function index(){
         $permission = PermissionsName::get()->groupBy("group_id");
+        $permission->map(function ($item){
+            $item['group_name'] = $item->first()->group_name;
+        });
 
         $users = User::select('name','id','email')->get();
         return view('admin.permissions.index',compact('users','permission'));
