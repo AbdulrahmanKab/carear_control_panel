@@ -1,29 +1,35 @@
 @extends('admin.layout.master_layout')
 @section('content')
 <div class="container-fluid" style="margin-top:7em">
-    <form class="row mt-5 ml-5" id="personal_info">
+    <form class="row mt-5 ml-5 d-flex justify-content-center" id="personal_info">
         @csrf
-        <div class="col-sm-3">
-            <img src="{{asset("uploads/".auth()->user()->image)}}" id="photo" alt="" width="210px" height="228px">
-            <input id="image" type="file" name="image" class="mt-3 ml-3">
+        <div class="row col-sm-12">
+            <div class="col-sm-1 ml-auto">
+                <button class="btn btn-sm btn-info edit">تعديل</button>
+            </div>
         </div>
-        <div class="col-sm-3 mt-5 d-flex flex-column">
-            <label for="">
-                الاسم:
-            <input type="text" id="name" name="name" class="form-control mt-2" readonly value="{{auth()->user()->name}}">
-            </label>
-            <label for="" class="mt-3">
-                الايميل:
-                <input type="text" id="email" name="email" class="form-control mt-2" readonly value="{{auth()->user()->email}}">
-            </label>
-            <label id="password-box" for="" class="mt-3">
-                كلمة السر:
-                <input type="text" id="password" name="password" class="form-control mt-2" >
-            </label>
+
+        <div class="col-sm-12 d-flex justify-content-center">
+            <div class="col-sm-3">
+                <img src="{{asset("uploads/".auth()->user()->image)}}" id="photo" alt="" width="210px" height="228px">
+                <input id="image" type="file" name="image" class="mt-3 ml-3">
+            </div>
+            <div class="col-sm-3 mt-5 d-flex flex-column">
+                <label for="">
+                    الاسم:
+                    <input type="text" id="name" name="name" class="form-control mt-2" readonly value="{{auth()->user()->name}}">
+                </label>
+                <label for="" class="mt-3">
+                    الايميل:
+                    <input type="text" id="email" name="email" class="form-control mt-2" readonly value="{{auth()->user()->email}}">
+                </label>
+                <label id="password-box" for="" class="mt-3">
+                    كلمة السر:
+                    <input type="text" id="password" name="password" class="form-control mt-2" >
+                </label>
+            </div>
         </div>
-        <div class="col-sm-1 ml-auto">
-            <button class="btn btn-sm btn-info edit">تعديل</button>
-        </div>
+
         <div class="row col-sm-12">
             <div class="col-sm-12 text-right">
 
